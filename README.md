@@ -1,0 +1,2 @@
+# HBBFT
+HoneyBadger BFT lib
