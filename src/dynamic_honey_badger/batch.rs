@@ -22,7 +22,7 @@ pub struct Batch<C, N: Ord> {
     pub(super) params: Params,
 }
 
-impl<C, N: NodeIdT, T> Batch<C, N> {
+impl<C, N: NodeIdT> Batch<C, N> {
     /// Returns the linear epoch of this `DynamicHoneyBadger` batch.
     pub fn epoch(&self) -> u64 {
         self.epoch
