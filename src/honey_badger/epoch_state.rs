@@ -84,7 +84,6 @@ impl<N: NodeIdT> SubsetState<N> {
                 let now = SystemTime::now();
                 let timestamp = now.duration_since(UNIX_EPOCH).expect("time recording error").as_secs();
                 println!("we have finished the ABA algrithm in {}", timestamp);
-                has_seen_done = true;
                 return Ok(cs::Step::default())
             }
         }
@@ -101,7 +100,6 @@ impl<N: NodeIdT> SubsetState<N> {
                 let now = SystemTime::now();
                 let timestamp = now.duration_since(UNIX_EPOCH).expect("time recording error").as_secs();
                 println!("we have finished the ABA algrithm in {}", timestamp);
-                has_seen_done = true;
                 proposer_ids.len()
             }
         }
@@ -362,6 +360,7 @@ where
                         }
                     }
                 }
+                has_seen_done = true;
             }
         }
         Ok(step)
