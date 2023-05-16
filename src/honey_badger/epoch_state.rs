@@ -80,7 +80,13 @@ impl<N: NodeIdT> SubsetState<N> {
     fn handle_message(&mut self, sender_id: &N, msg: cs::Message<N>) -> Result<CsStep<N>> {
         match self {
             SubsetState::Ongoing(ref mut cs) => cs.handle_message(sender_id, msg),
-            SubsetState::Complete(_) => return Ok(cs::Step::default()),
+            SubsetState::Complete(_) => {
+                let now = SystemTime::now();
+                let timestamp = now.duration_since(UNIX_EPOCH).expect("time recording error").as_secs();
+                println!("we have finished the ABA algrithm in {}", timestamp);
+                has_seen_done = true;
+                return Ok(cs::Step::default())
+            }
         }
         .map_err(Error::HandleSubsetMessage)
     }
@@ -90,7 +96,14 @@ impl<N: NodeIdT> SubsetState<N> {
     pub fn received_proposals(&self) -> usize {
         match self {
             SubsetState::Ongoing(ref cs) => cs.received_proposals(),
-            SubsetState::Complete(ref proposer_ids) => proposer_ids.len(),
+            SubsetState::Complete(ref proposer_ids) => {
+                // complete subset
+                let now = SystemTime::now();
+                let timestamp = now.duration_since(UNIX_EPOCH).expect("time recording error").as_secs();
+                println!("we have finished the ABA algrithm in {}", timestamp);
+                has_seen_done = true;
+                proposer_ids.len()
+            }
         }
     }
 
@@ -349,11 +362,6 @@ where
                         }
                     }
                 }
-                // complete threshold decrypt all contributions
-                let now = SystemTime::now();
-                let timestamp = now.duration_since(UNIX_EPOCH).expect("time recording error").as_secs();
-                println!("we have finished the ABA algrithm in {}", timestamp);
-                has_seen_done = true;
             }
         }
         Ok(step)
