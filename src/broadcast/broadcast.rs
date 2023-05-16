@@ -14,6 +14,7 @@ use super::message::HexProof;
 use super::{Error, FaultKind, Message, Result};
 use crate::fault_log::Fault;
 use crate::{ConsensusProtocol, NetworkInfo, NodeIdT, Target};
+use std::time::{SystemTime, UNIX_EPOCH};
 
 type RseResult<T> = result::Result<T, rse::Error>;
 
@@ -337,6 +338,10 @@ impl<N: NodeIdT> Broadcast<N> {
             .collect();
         if let Some(value) = self.decode_from_shards(&mut leaf_values, hash) {
             self.decided = true;
+            // currently, reveive the RBC value(2f+1 ready and >=f+1 echo)，Complete RBC
+            let now = SystemTime::now();
+            let timestamp = now.duration_since(UNIX_EPOCH).expect("time error").as_secs();
+            println!("currently, we have finished the RBC {}", timestamp);
             Ok(Step::default().with_output(value))
         } else {
             let fault_kind = FaultKind::BroadcastDecoding;

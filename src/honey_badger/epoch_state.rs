@@ -18,6 +18,7 @@ use crate::fault_log::Fault;
 use crate::subset::{self as cs, Subset, SubsetOutput};
 use crate::threshold_decrypt::{self as td, ThresholdDecrypt};
 use crate::{Contribution, NetworkInfo, NodeIdT};
+use std::time::{SystemTime, UNIX_EPOCH};
 
 type CsStep<N> = cs::Step<N>;
 
@@ -348,6 +349,10 @@ where
                         }
                     }
                 }
+                // complete threshold decrypt all contributions
+                let now = SystemTime::now();
+                let timestamp = now.duration_since(UNIX_EPOCH).expect("time recording error").as_secs();
+                println!("we have finished the ABA algrithm in {}", timestamp);
                 has_seen_done = true;
             }
         }

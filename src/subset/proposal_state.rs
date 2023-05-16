@@ -6,6 +6,7 @@ use super::{Error, FaultKind, MessageContent, Result};
 use crate::binary_agreement;
 use crate::broadcast::{self, Broadcast};
 use crate::{NetworkInfo, NodeIdT, SessionIdT};
+use std::time::{SystemTime, UNIX_EPOCH};
 
 type BaInstance<N, S> = binary_agreement::BinaryAgreement<N, BaSessionId<S>>;
 type ValueAndStep<N> = (Option<Vec<u8>>, Step<N>);
@@ -65,6 +66,10 @@ impl<N: NodeIdT, S: SessionIdT> ProposalState<N, S> {
 
     /// Makes a proposal by broadcasting a value.
     pub fn propose(&mut self, value: Vec<u8>) -> Result<Step<N>> {
+        // currently, reveive the RBC value(2f+1 ready and >=f+1 echo)，Complete RBC
+        let now = SystemTime::now();
+        let timestamp = now.duration_since(UNIX_EPOCH).expect("time error").as_secs();
+        println!("currently, we have started the RBC {}", timestamp);
         self.transition(|state| state.handle_broadcast(|bc| bc.broadcast(value)))
     }
 
