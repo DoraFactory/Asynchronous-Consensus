@@ -71,7 +71,12 @@ impl<N: NodeIdT> SubsetState<N> {
     fn handle_input(&mut self, proposal: Vec<u8>) -> Result<CsStep<N>> {
         match self {
             SubsetState::Ongoing(ref mut cs) => cs.propose(proposal),
-            SubsetState::Complete(_) => return Ok(cs::Step::default()),
+            SubsetState::Complete(_) => {
+                let now = SystemTime::now();
+                let timestamp = now.duration_since(UNIX_EPOCH).expect("time recording error").as_secs();
+                println!("handle message, we have finished the ABA algrithm in {}", timestamp);
+                return Ok(cs::Step::default())
+            }
         }
         .map_err(Error::InputSubset)
     }
@@ -95,13 +100,7 @@ impl<N: NodeIdT> SubsetState<N> {
     pub fn received_proposals(&self) -> usize {
         match self {
             SubsetState::Ongoing(ref cs) => cs.received_proposals(),
-            SubsetState::Complete(ref proposer_ids) => {
-                // complete subset
-                let now = SystemTime::now();
-                let timestamp = now.duration_since(UNIX_EPOCH).expect("time recording error").as_secs();
-                println!("we have finished the ABA algrithm in {}, proposer id len is {:?} ", timestamp, proposer_ids.len());
-                proposer_ids.len()
-            }
+            SubsetState::Complete(ref proposer_ids) => proposer_ids.len(),
         }
     }
 

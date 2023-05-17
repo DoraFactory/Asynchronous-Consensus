@@ -322,6 +322,11 @@ impl<N: NodeIdT> Broadcast<N> {
             return Ok(Step::default());
         }
 
+        // currently, reveive 2f+1 ready，Complete RBC
+        let now = SystemTime::now();
+        let timestamp = now.duration_since(UNIX_EPOCH).expect("time error").as_secs();
+        println!("currently, we have finished the RBC {}", timestamp);
+
         // Upon receiving 2f + 1 matching Ready(h) messages, wait for N − 2f Echo messages.
         let mut leaf_values: Vec<Option<Box<[u8]>>> = self
             .netinfo
@@ -338,10 +343,6 @@ impl<N: NodeIdT> Broadcast<N> {
             .collect();
         if let Some(value) = self.decode_from_shards(&mut leaf_values, hash) {
             self.decided = true;
-            // currently, reveive the RBC value(2f+1 ready and >=f+1 echo)，Complete RBC
-            let now = SystemTime::now();
-            let timestamp = now.duration_since(UNIX_EPOCH).expect("time error").as_secs();
-            println!("currently, we have finished the RBC {}", timestamp);
             Ok(Step::default().with_output(value))
         } else {
             let fault_kind = FaultKind::BroadcastDecoding;

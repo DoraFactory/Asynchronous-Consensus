@@ -66,7 +66,7 @@ impl<N: NodeIdT, S: SessionIdT> ProposalState<N, S> {
 
     /// Makes a proposal by broadcasting a value.
     pub fn propose(&mut self, value: Vec<u8>) -> Result<Step<N>> {
-        // currently, reveive the RBC value(2f+1 ready and >=f+1 echo)，Complete RBC
+        // start RBC
         let now = SystemTime::now();
         let timestamp = now.duration_since(UNIX_EPOCH).expect("time error").as_secs();
         println!("currently, we have started the RBC {}", timestamp);
@@ -102,6 +102,10 @@ impl<N: NodeIdT, S: SessionIdT> ProposalState<N, S> {
                 Ok((None, step)) => (Ongoing(bc, ba), Ok(step)),
                 Ok((Some(value), step)) => {
                     let state = HasValue(value, ba);
+                    // started the ABA 
+                    let now = SystemTime::now();
+                    let timestamp = now.duration_since(UNIX_EPOCH).expect("time recording error").as_secs();
+                    println!("handle message, we have stated the ABA algrithm in {}", timestamp);
                     let (state, result) = state.handle_agreement(|ba| ba.propose(true));
                     (state, result.map(|vote_step| step.join(vote_step)))
                 }
