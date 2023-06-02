@@ -1,7 +1,21 @@
-# HBBFT
+# Asynchronous Consensus
+
+## HBBFT
 This is a streamlined version of HoneyBadger BFT library
 
-## Algorithms
+
+### Algorithms Modules
+
+> We have simplified algorithm naming conventions from the original paper, Reference by [hbbft lib](https://github.com/poanetwork/hbbft)
+
+
+|  Algorithm Name  | Original Name                                 |
+| ---------------- | --------------------------------------------- |
+| Honey Badger     | HoneyBadgerBFT                                |
+| Subset           | Asynchronous Common Subset (ACS)              |
+| Broadcast        | Reliable Broadcast (RBC)                      |
+| Binary Agreement | Asynchronous Binary Byzantine Agreement (ABA) |
+
 - Honey Badger: Each node inputs transactions. The protocol outputs a sequence of batches of transactions.
 
 - Dynamic Honey Badger: A modified Honey Badger where nodes can dynamically add and remove other nodes to/from the network.
@@ -23,11 +37,6 @@ This is a streamlined version of HoneyBadger BFT library
 - External crates developed for this library
     - Threshold Crypto: A threshold cryptosystem for collaborative message decryption and signature creation.
 
-We have simplified algorithm naming conventions from the original paper.
 
-|  Algorithm Name  | Original Name                                 |
-| ---------------- | --------------------------------------------- |
-| Honey Badger     | HoneyBadgerBFT                                |
-| Subset           | Asynchronous Common Subset (ACS)              |
-| Broadcast        | Reliable Broadcast (RBC)                      |
-| Binary Agreement | Asynchronous Binary Byzantine Agreement (ABA) |
+## Dumbo
+This is a variant of the HBBFT algorithm that replaces the RBC (Reliable Broadcast) protocol of HBBFT with the PRBC (Probabilistic Reliable Broadcast) and CBC (Causal Broadcast) protocols.
