@@ -39,4 +39,4 @@ This is a streamlined version of HoneyBadger BFT library
 
 
 ## Dumbo
-This is a variant of the HBBFT algorithm that replaces the RBC (Reliable Broadcast) protocol of HBBFT with the PRBC (Probabilistic Reliable Broadcast) and CBC (Causal Broadcast) protocols.
+This is a variant of the HBBFT algorithm that replaces the RBC (Reliable Broadcast) protocol of HBBFT with the PRBC (Provable Reliable Broadcast) and CBC (Consistent Broadcast) protocols.
