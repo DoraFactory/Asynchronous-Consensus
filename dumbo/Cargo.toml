@@ -6,3 +6,19 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+bincode = "1.0.0"
+byteorder = "1.2.3"
+derivative = "1.0.1"
+env_logger = "0.6.0"
+failure = "0.1"
+hex_fmt = "0.3"
+init_with = "1.1.0"
+log = "0.4.1"
+rand = "0.6.1"
+rand_derive = "0.5.0"
+reed-solomon-erasure = "5.0.3"
+serde = "1.0.82"
+serde_derive = "1.0.82"
+threshold_crypto = "0.3.0"
+tiny-keccak = "1.4"
+hbbft = { path = "../hbbft" }

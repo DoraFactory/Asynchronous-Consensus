@@ -1,0 +1,8 @@
+{
+    "rust-analyzer.linkedProjects": [
+        "./dumbo/Cargo.toml",
+        "./dumbo/Cargo.toml",
+        "./dumbo/Cargo.toml",
+        "./dumbo/Cargo.toml"
+    ]
+}
